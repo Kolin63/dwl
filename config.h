@@ -3,12 +3,7 @@
 Kolin63's dwl build
 
 patches applied:
-
-
-dwm-statuscolors-20220322-bece862.diff
-dwm-vanitygaps-20190508-6.2.diff
-dwm-actualfullscreen-20211013-cb3f58a.diff
-dwm-pertag-6.2.diff
+* pertag
 
 */
 
