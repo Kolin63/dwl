@@ -138,6 +138,7 @@ static const Key keys[] = {
 	/* modifier                  key                  function          argument */
 	{ MODKEY,                    XKB_KEY_p,           spawn,            SHCMD("wmenu-run")},
 	{ MODKEY,                    XKB_KEY_Return,      spawn,            SHCMD("alacritty")},
+	{ MODKEY,                    XKB_KEY_semicolon,   spawn,            SHCMD("firefox")},
 	{ MODKEY,                    XKB_KEY_j,           focusstack,       {.i = +1} },
 	{ MODKEY,                    XKB_KEY_k,           focusstack,       {.i = -1} },
 	{ MODKEY,                    XKB_KEY_i,           incnmaster,       {.i = +1} },
