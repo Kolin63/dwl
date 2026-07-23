@@ -1,3 +1,5 @@
+// clang-format off
+
 /*
  * See LICENSE file for copyright and license details.
  */
@@ -88,7 +90,20 @@
 #define TEXTW(mon, text)        (drwl_font_getwidth(mon->drw, text) + mon->lrpad)
 
 /* enums */
-enum { SchemeNorm, SchemeSel, SchemeUrg }; /* color schemes */
+enum {
+	SchemeBlack		=	0,
+	SchemeRed			=	1,
+	SchemeGreen		=	2,
+	SchemeYellow	=	3,
+	SchemeBlue		=	4,
+	SchemePurple	=	5,
+	SchemeCyan		=	6,
+	SchemeWhite		=	7,
+	SchemeBright	=	8,
+	SchemeNorm		=	100,
+	SchemeSel 		=	101,
+	SchemeUrg   	=	102,
+}; /* color schemes */
 enum { CurNormal, CurPressed, CurMove, CurResize }; /* cursor */
 enum { XDGShell, LayerShell, X11 }; /* client types */
 enum { LyrBg, LyrBottom, LyrTile, LyrFloat, LyrTop, LyrFS, LyrOverlay, LyrBlock, NUM_LAYERS }; /* scene layers */
@@ -382,6 +397,7 @@ static void setsel(struct wl_listener *listener, void *data);
 static void setup(void);
 static void spawn(const Arg *arg);
 static void startdrag(struct wl_listener *listener, void *data);
+static void statusget(char* buf, size_t len);
 static int statusin(int fd, unsigned int mask, void *data);
 static void tag(const Arg *arg);
 static void tagmon(const Arg *arg);

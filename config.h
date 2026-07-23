@@ -17,6 +17,7 @@ patches applied:
                         ((hex >> 16) & 0xFF) / 255.0f, \
                         ((hex >> 8) & 0xFF) / 255.0f, \
                         (hex & 0xFF) / 255.0f }
+
 /* appearance */
 static const int sloppyfocus               = 1;  /* focus follows mouse */
 static const int bypass_surface_visibility = 0;  /* 1 means idle inhibitors will disable idle tracking even if it's surface isn't visible  */
@@ -37,10 +38,26 @@ static const float urgentcolor[]           = COLOR(0xff0000ff);
 /* This conforms to the xdg-protocol. Set the alpha to zero to restore the old behavior */
 static const float fullscreen_bg[]         = {0.0f, 0.0f, 0.0f, 1.0f}; /* You can also use glsl colors */
 static uint32_t colors[][3]                = {
-	/*               fg          bg          border    */
-	[SchemeNorm] = { 0xbbbbbbff, 0x222222ff, 0x444444ff },
-	[SchemeSel]  = { 0xeeeeeeff, 0x005577ff, 0x005577ff },
-	[SchemeUrg]  = { 0,          0,          0x770000ff },
+	/*                                fg          bg          border    */
+	[SchemeBlack]		              =	{ 0x282828ff, 0x282828ff, 0x282828ff },
+	[SchemeRed]			              =	{ 0xcc241dff, 0x282828ff, 0x282828ff },
+	[SchemeGreen]		              =	{ 0x98971aff, 0x282828ff, 0x282828ff },
+	[SchemeYellow]	              =	{ 0xd79921ff, 0x282828ff, 0x282828ff },
+	[SchemeBlue]		              =	{ 0x458588ff, 0x282828ff, 0x282828ff },
+	[SchemePurple]	              =	{ 0xb16286ff, 0x282828ff, 0x282828ff },
+	[SchemeCyan]		              =	{ 0x689d6aff, 0x282828ff, 0x282828ff },
+	[SchemeWhite]		              =	{ 0xa89984ff, 0x282828ff, 0x282828ff },
+	[SchemeBlack | SchemeBright]	=	{ 0x928374ff, 0x282828ff, 0x282828ff },
+	[SchemeRed | SchemeBright]		=	{ 0xfb4934ff, 0x282828ff, 0x282828ff },
+	[SchemeGreen | SchemeBright]	=	{ 0xb8bb26ff, 0x282828ff, 0x282828ff },
+	[SchemeYellow | SchemeBright]	=	{ 0xfabd2fff, 0x282828ff, 0x282828ff },
+	[SchemeBlue | SchemeBright]		=	{ 0x83a598ff, 0x282828ff, 0x282828ff },
+	[SchemePurple | SchemeBright]	=	{ 0xd3869bff, 0x282828ff, 0x282828ff },
+	[SchemeCyan | SchemeBright]		=	{ 0x8ec07cff, 0x282828ff, 0x282828ff },
+	[SchemeWhite | SchemeBright]	=	{ 0xebdbb2ff, 0x282828ff, 0x282828ff },
+	[SchemeNorm]		              =	{ 0xebdbb2ff, 0x282828ff, 0x458588ff },
+	[SchemeSel]			              =	{ 0xebdbb2ff, 0x458588ff, 0x458588ff },
+	[SchemeUrg] 		              =	{ 0xebdbb2ff, 0xcc241dff, 0x458588ff },
 };
 
 /* tagging - TAGCOUNT must be no greater than 31 */
