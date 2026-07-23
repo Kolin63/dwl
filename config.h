@@ -28,7 +28,7 @@ static const unsigned int gappoh           = 20; /* horiz outer gap between wind
 static const unsigned int gappov           = 30; /* vert outer gap between windows and screen edge */
 static const int showbar                   = 1; /* 0 means no bar */
 static const int topbar                    = 1; /* 0 means bottom bar */
-static const char *fonts[]                 = {"monospace:size=10"};
+static const char *fonts[]                 = {"JetBrainsMono Nerd Font:size=10"};
 static const float rootcolor[]             = COLOR(0x222222ff);
 static const float bordercolor[]           = COLOR(0x444444ff);
 static const float focuscolor[]            = COLOR(0x005577ff);
