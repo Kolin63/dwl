@@ -90,20 +90,6 @@
 #define TEXTW(mon, text)        (drwl_font_getwidth(mon->drw, text) + mon->lrpad)
 
 /* enums */
-enum {
-	SchemeBlack		=	0,
-	SchemeRed			=	1,
-	SchemeGreen		=	2,
-	SchemeYellow	=	3,
-	SchemeBlue		=	4,
-	SchemePurple	=	5,
-	SchemeCyan		=	6,
-	SchemeWhite		=	7,
-	SchemeBright	=	8,
-	SchemeNorm		=	100,
-	SchemeSel 		=	101,
-	SchemeUrg   	=	102,
-}; /* color schemes */
 enum { CurNormal, CurPressed, CurMove, CurResize }; /* cursor */
 enum { XDGShell, LayerShell, X11 }; /* client types */
 enum { LyrBg, LyrBottom, LyrTile, LyrFloat, LyrTop, LyrFS, LyrOverlay, LyrBlock, NUM_LAYERS }; /* scene layers */
@@ -123,6 +109,9 @@ typedef struct {
 	void (*func)(const Arg *);
 	const Arg arg;
 } Button;
+
+typedef struct SBlock SBlock;
+typedef struct SBlocks SBlocks;
 
 typedef struct Pertag Pertag;
 typedef struct Monitor Monitor;
@@ -339,6 +328,7 @@ static void destroykeyboardgroup(struct wl_listener *listener, void *data);
 static Monitor *dirtomon(enum wlr_direction dir);
 static void drawbar(Monitor *m);
 static void drawbars(void);
+static int drawstatus(Monitor *m);
 static void focusclient(Client *c, int lift);
 static void focusmon(const Arg *arg);
 static void focusstack(const Arg *arg);
@@ -397,8 +387,8 @@ static void setsel(struct wl_listener *listener, void *data);
 static void setup(void);
 static void spawn(const Arg *arg);
 static void startdrag(struct wl_listener *listener, void *data);
-static void statusget(char* buf, size_t len);
-static int statusin(int fd, unsigned int mask, void *data);
+static void updatestatus(SBlocks *sblocks);
+static void getstext(char *buf, size_t size, const SBlocks *sblocks);
 static void tag(const Arg *arg);
 static void tagmon(const Arg *arg);
 static void tile(Monitor *m);
@@ -487,8 +477,7 @@ static Monitor *selmon;
 
 static int enablegaps = 1;   /* enables gaps, used by togglegaps */
 
-static char stext[256];
-static struct wl_event_source *status_event_source;
+static SBlocks sblocks;
 
 static const struct wlr_buffer_impl buffer_impl = {
     .destroy = bufdestroy,
@@ -551,6 +540,16 @@ struct Pertag {
 	float mfacts[TAGCOUNT + 1]; /* mfacts per tag */
 	unsigned int sellts[TAGCOUNT + 1]; /* selected layouts */
 	const Layout *ltidxs[TAGCOUNT + 1][2]; /* matrix of tags and layouts indexes  */
+};
+
+struct SBlock {
+  char text[STATUS_BLOCK_SIZE];
+  unsigned int color;
+};
+
+struct SBlocks {
+  size_t size;
+  SBlock blocks[STATUS_MAX_BLOCKS];
 };
 
 /* function implementations */
@@ -833,6 +832,10 @@ buttonpress(struct wl_listener *listener, void *data)
 			do
 				x += TEXTW(selmon, tags[i]);
 			while (cx >= x && ++i < LENGTH(tags));
+
+      char stext[STATUS_MAX_BLOCKS * STATUS_BLOCK_SIZE + 1];
+      getstext(stext, sizeof(stext), &sblocks);
+
 			if (i < LENGTH(tags)) {
 				click = ClkTagBar;
 				arg.ui = 1 << i;
@@ -1662,11 +1665,8 @@ drawbar(Monitor *m)
 		return;
 
 	/* draw status first so it can be overdrawn by tags later */
-	if (m == selmon) { /* status is only drawn on selected monitor */
-		drwl_setscheme(m->drw, colors[SchemeNorm]);
-		tw = TEXTW(m, stext) - m->lrpad + 2; /* 2px right padding */
-		drwl_text(m->drw, m->b.width - tw, 0, tw, m->b.height, 0, stext, 0);
-	}
+	if (m == selmon)
+		tw = drawstatus(m); /* status is only drawn on selected monitor */
 
 	wl_list_for_each(c, &clients, link) {
 		if (c->mon != m)
@@ -1718,6 +1718,51 @@ drawbars(void)
 
 	wl_list_for_each(m, &mons, link)
 		drawbar(m);
+}
+
+int
+drawstatus(Monitor *m)
+{
+	int x, tw, iw;
+	char rstext[STATUS_MAX_BLOCKS * STATUS_BLOCK_SIZE + 1];
+	char *p, *itext;
+	uint32_t scheme[3], *color;
+
+	/* calculate real width of stext */
+  getstext(rstext, sizeof(rstext), &sblocks);
+	tw = TEXTW(m, rstext) - m->lrpad;
+
+	x = m->b.width - tw;
+  for (size_t i = 0; i < sblocks.size; i++) {
+    const SBlock *block = &sblocks.blocks[i];
+    scheme[0] = colors[block->color][0];
+    scheme[1] = colors[block->color][1];
+    drwl_setscheme(m->drw, scheme);
+    itext = block->text;
+
+    iw = TEXTW(m, itext) - m->lrpad;
+    if (*itext) /* only draw text if there is something to draw */
+      x = drwl_text(m->drw, x, 0, iw, m->b.height, 0, itext, 0);
+  }
+
+	return tw;
+}
+
+void updatestatus(SBlocks *s) {
+  size_t i = 0;
+
+  snprintf(s->blocks[i].text, STATUS_BLOCK_SIZE, " hello, world! ");
+  s->blocks[i].color = SchemeGreen;
+  i++;
+
+  time_t time_now = time(NULL);
+  struct tm tm;
+  localtime_r(&time_now, &tm);
+  snprintf(s->blocks[i].text, STATUS_BLOCK_SIZE, "%i:%i ", tm.tm_hour, tm.tm_min);
+  s->blocks[i].color = SchemeWhite | SchemeBright;
+  i++;
+
+  s->size = i;
 }
 
 void
@@ -3058,9 +3103,6 @@ setup(void)
 
 	drwl_init();
 
-	status_event_source = wl_event_loop_add_fd(wl_display_get_event_loop(dpy),
-		STDIN_FILENO, WL_EVENT_READABLE, statusin, NULL);
-
 	/* Make sure XWayland clients don't connect to the parent X server,
 	 * e.g when running in the x11 backend or the wayland backend and the
 	 * compositor has Xwayland support */
@@ -3105,28 +3147,19 @@ startdrag(struct wl_listener *listener, void *data)
 	LISTEN_STATIC(&drag->icon->events.destroy, destroydragicon);
 }
 
-int
-statusin(int fd, unsigned int mask, void *data)
+void
+getstext(char *buf, size_t size, const SBlocks *sblocks)
 {
-	char status[256];
-	ssize_t n;
+  size_t chars = 0;
 
-	if (mask & WL_EVENT_ERROR)
-		die("status in event error");
-	if (mask & WL_EVENT_HANGUP)
-		wl_event_source_remove(status_event_source);
+  for (size_t i = 0; i < sblocks->size && chars < size - 1; i++) {
+    for (const char *c = sblocks->blocks[i].text; *c != NULL && chars < size - 1; c++) {
+      buf[chars] = *c;
+      chars++;
+    }
+  }
 
-	n = read(fd, status, sizeof(status) - 1);
-	if (n < 0 && errno != EWOULDBLOCK)
-		die("read:");
-
-	status[n] = '\0';
-	status[strcspn(status, "\n")] = '\0';
-
-	strncpy(stext, status, sizeof(stext));
-	drawbars();
-
-	return 0;
+  buf[chars] = '\0';
 }
 
 void
@@ -3418,8 +3451,8 @@ updatemons(struct wl_listener *listener, void *data)
 		}
 	}
 
-	if (stext[0] == '\0')
-		strncpy(stext, "dwl-"VERSION, sizeof(stext));
+  updatestatus(&sblocks);
+
 	wl_list_for_each(m, &mons, link) {
 		updatebar(m);
 		drawbar(m);

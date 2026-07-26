@@ -12,6 +12,8 @@ patches applied:
 
 // clang-format off
 
+#include <stdint.h>
+
 /* Taken from https://github.com/djpohly/dwl/issues/466 */
 #define COLOR(hex)    { ((hex >> 24) & 0xFF) / 255.0f, \
                         ((hex >> 16) & 0xFF) / 255.0f, \
@@ -37,6 +39,23 @@ static const float focuscolor[]            = COLOR(0x005577ff);
 static const float urgentcolor[]           = COLOR(0xff0000ff);
 /* This conforms to the xdg-protocol. Set the alpha to zero to restore the old behavior */
 static const float fullscreen_bg[]         = {0.0f, 0.0f, 0.0f, 1.0f}; /* You can also use glsl colors */
+
+/* color schemes */
+enum {
+	SchemeBlack		=	0,
+	SchemeRed			=	1,
+	SchemeGreen		=	2,
+	SchemeYellow	=	3,
+	SchemeBlue		=	4,
+	SchemePurple	=	5,
+	SchemeCyan		=	6,
+	SchemeWhite		=	7,
+	SchemeBright	=	8,
+	SchemeNorm		=	100,
+	SchemeSel 		=	101,
+	SchemeUrg   	=	102,
+};
+
 static uint32_t colors[][3]                = {
 	/*                                fg          bg          border    */
 	[SchemeBlack]		              =	{ 0x282828ff, 0x282828ff, 0x282828ff },
@@ -63,6 +82,9 @@ static uint32_t colors[][3]                = {
 /* tagging - TAGCOUNT must be no greater than 31 */
 static char *tags[] = { "1", "2", "3", "4", "5", "6", "7", "8", "9" };
 #define TAGCOUNT (LENGTH(tags))
+
+#define STATUS_MAX_BLOCKS 16
+#define STATUS_BLOCK_SIZE 512
 
 /* logging */
 static int log_level = WLR_ERROR;
