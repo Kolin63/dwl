@@ -334,6 +334,7 @@ static void focusmon(const Arg *arg);
 static void focusstack(const Arg *arg);
 static Client *focustop(Monitor *m);
 static void fullscreennotify(struct wl_listener *listener, void *data);
+static void getstext(char *buf, size_t size, const SBlocks *sb);
 static void gpureset(struct wl_listener *listener, void *data);
 static void handlecursoractivity(void);
 static int hidecursor(void *data);
@@ -387,8 +388,6 @@ static void setsel(struct wl_listener *listener, void *data);
 static void setup(void);
 static void spawn(const Arg *arg);
 static void startdrag(struct wl_listener *listener, void *data);
-static void updatestatus(SBlocks *sblocks);
-static void getstext(char *buf, size_t size, const SBlocks *sblocks);
 static void tag(const Arg *arg);
 static void tagmon(const Arg *arg);
 static void tile(Monitor *m);
@@ -403,6 +402,7 @@ static void unmaplayersurfacenotify(struct wl_listener *listener, void *data);
 static void unmapnotify(struct wl_listener *listener, void *data);
 static void updatemons(struct wl_listener *listener, void *data);
 static void updatebar(Monitor *m);
+static int updatestatus(SBlocks *sblocks);
 static void updatetitle(struct wl_listener *listener, void *data);
 static void urgent(struct wl_listener *listener, void *data);
 static void view(const Arg *arg);
@@ -478,6 +478,7 @@ static Monitor *selmon;
 static int enablegaps = 1;   /* enables gaps, used by togglegaps */
 
 static SBlocks sblocks;
+static struct wl_event_source *status_event_source;
 
 static const struct wlr_buffer_impl buffer_impl = {
     .destroy = bufdestroy,
@@ -809,6 +810,7 @@ buttonpress(struct wl_listener *listener, void *data)
 	Arg arg = {0};
 	Client *c;
 	const Button *b;
+  char stext[STATUS_MAX_BLOCKS * STATUS_BLOCK_SIZE + 1];
 
 	wlr_idle_notifier_v1_notify_activity(idle_notifier, seat);
 	handlecursoractivity();
@@ -833,7 +835,6 @@ buttonpress(struct wl_listener *listener, void *data)
 				x += TEXTW(selmon, tags[i]);
 			while (cx >= x && ++i < LENGTH(tags));
 
-      char stext[STATUS_MAX_BLOCKS * STATUS_BLOCK_SIZE + 1];
       getstext(stext, sizeof(stext), &sblocks);
 
 			if (i < LENGTH(tags)) {
@@ -1318,7 +1319,7 @@ createmon(struct wl_listener *listener, void *data)
 
 	m->scene_buffer = wlr_scene_buffer_create(layers[LyrBottom], NULL);
 	m->scene_buffer->point_accepts_input = baracceptsinput;
-	updatebar(m);
+  updatebar(m);
 
 	wl_list_insert(&mons, &m->link);
 	drawbars();
@@ -1725,8 +1726,8 @@ drawstatus(Monitor *m)
 {
 	int x, tw, iw;
 	char rstext[STATUS_MAX_BLOCKS * STATUS_BLOCK_SIZE + 1];
-	char *p, *itext;
-	uint32_t scheme[3], *color;
+	const char *itext;
+	uint32_t scheme[3];
 
 	/* calculate real width of stext */
   getstext(rstext, sizeof(rstext), &sblocks);
@@ -1748,21 +1749,209 @@ drawstatus(Monitor *m)
 	return tw;
 }
 
-void updatestatus(SBlocks *s) {
+int
+updatestatus(SBlocks *s) {
   size_t i = 0;
+	Monitor *m;
 
-  snprintf(s->blocks[i].text, STATUS_BLOCK_SIZE, " hello, world! ");
-  s->blocks[i].color = SchemeGreen;
+  time_t time_now;
+  struct tm tm;
+
+  const char* wday;
+  const char* mon;
+  const char* mday;
+  char year[16];
+
+  const char* hour;
+  const char* min;
+  const char* xm; // am, pm
+
+  // date and time
+  time_now = time(NULL);
+  localtime_r(&time_now, &tm);
+
+  // date
+  switch (tm.tm_wday) {
+  case 0: wday = " Sun "; break;
+  case 1: wday = " Mon "; break;
+  case 2: wday = " Tue "; break;
+  case 3: wday = " Wed "; break;
+  case 4: wday = " Thu "; break;
+  case 5: wday = " Fri "; break;
+  case 6: wday = " Sat "; break;
+  default: wday = " ??? "; break;
+  }
+
+  switch (tm.tm_mon) {
+  case 0:  mon = "Jan "; break;
+  case 1:  mon = "Feb "; break;
+  case 2:  mon = "Mar "; break;
+  case 3:  mon = "Apr "; break;
+  case 4:  mon = "May "; break;
+  case 5:  mon = "Jun "; break;
+  case 6:  mon = "Jul "; break;
+  case 7:  mon = "Aug "; break;
+  case 8:  mon = "Sep "; break;
+  case 9:  mon = "Oct "; break;
+  case 10: mon = "Nov "; break;
+  case 11: mon = "Dec "; break;
+  default: mon = "??? "; break;
+  }
+
+  switch (tm.tm_mday) {
+  case 1:  mday = "01 "; break;
+  case 2:  mday = "02 "; break;
+  case 3:  mday = "03 "; break;
+  case 4:  mday = "04 "; break;
+  case 5:  mday = "05 "; break;
+  case 6:  mday = "06 "; break;
+  case 7:  mday = "07 "; break;
+  case 8:  mday = "08 "; break;
+  case 9:  mday = "09 "; break;
+  case 10: mday = "10 "; break;
+  case 11: mday = "11 "; break;
+  case 12: mday = "12 "; break;
+  case 13: mday = "13 "; break;
+  case 14: mday = "14 "; break;
+  case 15: mday = "15 "; break;
+  case 16: mday = "16 "; break;
+  case 17: mday = "17 "; break;
+  case 18: mday = "18 "; break;
+  case 19: mday = "19 "; break;
+  case 20: mday = "20 "; break;
+  case 21: mday = "21 "; break;
+  case 22: mday = "22 "; break;
+  case 23: mday = "23 "; break;
+  case 24: mday = "24 "; break;
+  case 25: mday = "25 "; break;
+  case 26: mday = "26 "; break;
+  case 27: mday = "27 "; break;
+  case 28: mday = "28 "; break;
+  case 29: mday = "29 "; break;
+  case 30: mday = "30 "; break;
+  case 31: mday = "31 "; break;
+  default: mday = "?? "; break;
+  }
+
+  snprintf(year, sizeof(year), "%i", tm.tm_year + 1900);
+
+  strcpy(s->blocks[i].text, wday);
+  strcat(s->blocks[i].text, mon);
+  strcat(s->blocks[i].text, mday);
+  strcat(s->blocks[i].text, year);
+
+  s->blocks[i].color = SchemeWhite;
   i++;
 
-  time_t time_now = time(NULL);
-  struct tm tm;
-  localtime_r(&time_now, &tm);
-  snprintf(s->blocks[i].text, STATUS_BLOCK_SIZE, "%i:%i ", tm.tm_hour, tm.tm_min);
+  // time
+  switch (tm.tm_hour) {
+    case  0: hour = " 12:"; xm = " AM "; break;
+    case  1: hour = " 01:"; xm = " AM "; break;
+    case  2: hour = " 02:"; xm = " AM "; break;
+    case  3: hour = " 03:"; xm = " AM "; break;
+    case  4: hour = " 04:"; xm = " AM "; break;
+    case  5: hour = " 05:"; xm = " AM "; break;
+    case  6: hour = " 06:"; xm = " AM "; break;
+    case  7: hour = " 07:"; xm = " AM "; break;
+    case  8: hour = " 08:"; xm = " AM "; break;
+    case  9: hour = " 09:"; xm = " AM "; break;
+    case 10: hour = " 10:"; xm = " AM "; break;
+    case 11: hour = " 11:"; xm = " AM "; break;
+    case 12: hour = " 12:"; xm = " PM "; break;
+    case 13: hour = " 01:"; xm = " PM "; break;
+    case 14: hour = " 02:"; xm = " PM "; break;
+    case 15: hour = " 03:"; xm = " PM "; break;
+    case 16: hour = " 04:"; xm = " PM "; break;
+    case 17: hour = " 05:"; xm = " PM "; break;
+    case 18: hour = " 06:"; xm = " PM "; break;
+    case 19: hour = " 07:"; xm = " PM "; break;
+    case 20: hour = " 08:"; xm = " PM "; break;
+    case 21: hour = " 09:"; xm = " PM "; break;
+    case 22: hour = " 10:"; xm = " PM "; break;
+    case 23: hour = " 11:"; xm = " PM "; break;
+    default: hour = " ??:"; xm = " ?? "; break;
+  }
+
+  switch (tm.tm_min) {
+    case  0: min = "00"; break;
+    case  1: min = "01"; break;
+    case  2: min = "02"; break;
+    case  3: min = "03"; break;
+    case  4: min = "04"; break;
+    case  5: min = "05"; break;
+    case  6: min = "06"; break;
+    case  7: min = "07"; break;
+    case  8: min = "08"; break;
+    case  9: min = "09"; break;
+    case 10: min = "10"; break;
+    case 11: min = "11"; break;
+    case 12: min = "12"; break;
+    case 13: min = "13"; break;
+    case 14: min = "14"; break;
+    case 15: min = "15"; break;
+    case 16: min = "16"; break;
+    case 17: min = "17"; break;
+    case 18: min = "18"; break;
+    case 19: min = "19"; break;
+    case 20: min = "20"; break;
+    case 21: min = "21"; break;
+    case 22: min = "22"; break;
+    case 23: min = "23"; break;
+    case 24: min = "24"; break;
+    case 25: min = "25"; break;
+    case 26: min = "26"; break;
+    case 27: min = "27"; break;
+    case 28: min = "28"; break;
+    case 29: min = "29"; break;
+    case 30: min = "30"; break;
+    case 31: min = "31"; break;
+    case 32: min = "32"; break;
+    case 33: min = "33"; break;
+    case 34: min = "34"; break;
+    case 35: min = "35"; break;
+    case 36: min = "36"; break;
+    case 37: min = "37"; break;
+    case 38: min = "38"; break;
+    case 39: min = "39"; break;
+    case 40: min = "40"; break;
+    case 41: min = "41"; break;
+    case 42: min = "42"; break;
+    case 43: min = "43"; break;
+    case 44: min = "44"; break;
+    case 45: min = "45"; break;
+    case 46: min = "46"; break;
+    case 47: min = "47"; break;
+    case 48: min = "48"; break;
+    case 49: min = "49"; break;
+    case 50: min = "50"; break;
+    case 51: min = "51"; break;
+    case 52: min = "52"; break;
+    case 53: min = "53"; break;
+    case 54: min = "54"; break;
+    case 55: min = "55"; break;
+    case 56: min = "56"; break;
+    case 57: min = "57"; break;
+    case 58: min = "58"; break;
+    case 59: min = "59"; break;
+    default: min = "??"; break;
+  }
+
+  strcpy(s->blocks[i].text, hour);
+  strcat(s->blocks[i].text, min);
+  strcat(s->blocks[i].text, xm);
   s->blocks[i].color = SchemeWhite | SchemeBright;
   i++;
 
   s->size = i;
+
+	wl_list_for_each(m, &mons, link) {
+		updatebar(m);
+		drawbar(m);
+	}
+
+  wl_event_source_timer_update(status_event_source, statusrefreshms);
+
+  return 0;
 }
 
 void
@@ -3103,6 +3292,9 @@ setup(void)
 
 	drwl_init();
 
+  status_event_source = wl_event_loop_add_timer(wl_display_get_event_loop(dpy), (wl_event_loop_timer_func_t)updatestatus, &sblocks);
+  wl_event_source_timer_update(status_event_source, statusrefreshms);
+
 	/* Make sure XWayland clients don't connect to the parent X server,
 	 * e.g when running in the x11 backend or the wayland backend and the
 	 * compositor has Xwayland support */
@@ -3148,12 +3340,12 @@ startdrag(struct wl_listener *listener, void *data)
 }
 
 void
-getstext(char *buf, size_t size, const SBlocks *sblocks)
+getstext(char *buf, size_t size, const SBlocks *sb)
 {
   size_t chars = 0;
 
-  for (size_t i = 0; i < sblocks->size && chars < size - 1; i++) {
-    for (const char *c = sblocks->blocks[i].text; *c != NULL && chars < size - 1; c++) {
+  for (size_t i = 0; i < sb->size && chars < size - 1; i++) {
+    for (const char *c = sb->blocks[i].text; *c != '\0' && chars < size - 1; c++) {
       buf[chars] = *c;
       chars++;
     }
@@ -3450,8 +3642,6 @@ updatemons(struct wl_listener *listener, void *data)
 			client_activate_surface(selmon->lock_surface->surface, 1);
 		}
 	}
-
-  updatestatus(&sblocks);
 
 	wl_list_for_each(m, &mons, link) {
 		updatebar(m);

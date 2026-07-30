@@ -33,6 +33,9 @@ static const unsigned int gappov           = 30; /* vert outer gap between windo
 static const int showbar                   = 1; /* 0 means no bar */
 static const int topbar                    = 1; /* 0 means bottom bar */
 static const char *fonts[]                 = {"JetBrainsMono Nerd Font:size=10"};
+#define STATUS_MAX_BLOCKS                    16
+#define STATUS_BLOCK_SIZE                    512
+static const unsigned int statusrefreshms  = 1000;
 static const float rootcolor[]             = COLOR(0x222222ff);
 static const float bordercolor[]           = COLOR(0x444444ff);
 static const float focuscolor[]            = COLOR(0x005577ff);
@@ -82,9 +85,6 @@ static uint32_t colors[][3]                = {
 /* tagging - TAGCOUNT must be no greater than 31 */
 static char *tags[] = { "1", "2", "3", "4", "5", "6", "7", "8", "9" };
 #define TAGCOUNT (LENGTH(tags))
-
-#define STATUS_MAX_BLOCKS 16
-#define STATUS_BLOCK_SIZE 512
 
 /* logging */
 static int log_level = WLR_ERROR;
