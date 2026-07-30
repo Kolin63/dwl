@@ -1760,7 +1760,6 @@ updatestatus(SBlocks *s) {
   const char* wday;
   const char* mon;
   const char* mday;
-  char year[16];
 
   const char* hour;
   const char* min;
@@ -1799,47 +1798,43 @@ updatestatus(SBlocks *s) {
   }
 
   switch (tm.tm_mday) {
-  case 1:  mday = "01 "; break;
-  case 2:  mday = "02 "; break;
-  case 3:  mday = "03 "; break;
-  case 4:  mday = "04 "; break;
-  case 5:  mday = "05 "; break;
-  case 6:  mday = "06 "; break;
-  case 7:  mday = "07 "; break;
-  case 8:  mday = "08 "; break;
-  case 9:  mday = "09 "; break;
-  case 10: mday = "10 "; break;
-  case 11: mday = "11 "; break;
-  case 12: mday = "12 "; break;
-  case 13: mday = "13 "; break;
-  case 14: mday = "14 "; break;
-  case 15: mday = "15 "; break;
-  case 16: mday = "16 "; break;
-  case 17: mday = "17 "; break;
-  case 18: mday = "18 "; break;
-  case 19: mday = "19 "; break;
-  case 20: mday = "20 "; break;
-  case 21: mday = "21 "; break;
-  case 22: mday = "22 "; break;
-  case 23: mday = "23 "; break;
-  case 24: mday = "24 "; break;
-  case 25: mday = "25 "; break;
-  case 26: mday = "26 "; break;
-  case 27: mday = "27 "; break;
-  case 28: mday = "28 "; break;
-  case 29: mday = "29 "; break;
-  case 30: mday = "30 "; break;
-  case 31: mday = "31 "; break;
-  default: mday = "?? "; break;
+  case 1:  mday = "01"; break;
+  case 2:  mday = "02"; break;
+  case 3:  mday = "03"; break;
+  case 4:  mday = "04"; break;
+  case 5:  mday = "05"; break;
+  case 6:  mday = "06"; break;
+  case 7:  mday = "07"; break;
+  case 8:  mday = "08"; break;
+  case 9:  mday = "09"; break;
+  case 10: mday = "10"; break;
+  case 11: mday = "11"; break;
+  case 12: mday = "12"; break;
+  case 13: mday = "13"; break;
+  case 14: mday = "14"; break;
+  case 15: mday = "15"; break;
+  case 16: mday = "16"; break;
+  case 17: mday = "17"; break;
+  case 18: mday = "18"; break;
+  case 19: mday = "19"; break;
+  case 20: mday = "20"; break;
+  case 21: mday = "21"; break;
+  case 22: mday = "22"; break;
+  case 23: mday = "23"; break;
+  case 24: mday = "24"; break;
+  case 25: mday = "25"; break;
+  case 26: mday = "26"; break;
+  case 27: mday = "27"; break;
+  case 28: mday = "28"; break;
+  case 29: mday = "29"; break;
+  case 30: mday = "30"; break;
+  case 31: mday = "31"; break;
+  default: mday = "??"; break;
   }
-
-  snprintf(year, sizeof(year), "%i", tm.tm_year + 1900);
 
   strcpy(s->blocks[i].text, wday);
   strcat(s->blocks[i].text, mon);
   strcat(s->blocks[i].text, mday);
-  strcat(s->blocks[i].text, year);
-
   s->blocks[i].color = SchemeWhite;
   i++;
 
