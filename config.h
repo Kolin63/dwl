@@ -89,11 +89,13 @@ static char *tags[] = { "1", "2", "3", "4", "5", "6", "7", "8", "9" };
 /* logging */
 static int log_level = WLR_ERROR;
 
+#define TAGSMASK(x) 1 << (x - 1)
+
 static const Rule rules[] = {
 	/* app_id             title       tags mask     isfloating   monitor */
-	{ "Gimp_EXAMPLE",     NULL,       0,            1,           -1 }, /* Start on currently visible tags floating, not tiled */
-	{ "firefox_EXAMPLE",  NULL,       1 << 8,       0,           -1 }, /* Start on ONLY tag "9" */
-    /* default/example rule: can be changed but cannot be eliminated; at least one rule must exist */
+	{ "firefox",          NULL,       TAGSMASK(2),  0,           -1 },
+	{ "discord",          NULL,       TAGSMASK(8),  0,           -1 },
+	{ "spotify",          NULL,       TAGSMASK(9),  0,           -1 },
 };
 
 /* layout(s) */
