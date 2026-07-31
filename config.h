@@ -194,6 +194,11 @@ static const Key keys[] = {
 	{ MODKEY,                    XKB_KEY_p,           spawn,            SHCMD("wmenu-run")},
 	{ MODKEY,                    XKB_KEY_Return,      spawn,            SHCMD("foot")},
 	{ MODKEY,                    XKB_KEY_semicolon,   spawn,            SHCMD("firefox")},
+
+	{ 0,                         XKB_KEY_XF86AudioRaiseVolume,  spawn,  { .v = (const char*[]){ "bash", "/home/colin/.dotfiles/scripts/volctl", "up", "5", NULL } } },
+	{ 0,                         XKB_KEY_XF86AudioLowerVolume,  spawn,  { .v = (const char*[]){ "bash", "/home/colin/.dotfiles/scripts/volctl", "down", "5", NULL } } },
+	{ 0,                         XKB_KEY_XF86AudioMute,         spawn,  { .v = (const char*[]){ "bash", "/home/colin/.dotfiles/scripts/volctl", "togglemute", NULL } } },
+
 	{ MODKEY,                    XKB_KEY_j,           focusstack,       {.i = +1} },
 	{ MODKEY,                    XKB_KEY_k,           focusstack,       {.i = -1} },
 	{ MODKEY,                    XKB_KEY_i,           incnmaster,       {.i = +1} },
