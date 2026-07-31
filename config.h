@@ -185,15 +185,12 @@ static const int cursor_timeout = 3;
 	{ MODKEY|WLR_MODIFIER_SHIFT, SKEY,           tag,             {.ui = 1 << TAG} }, \
 	{ MODKEY|WLR_MODIFIER_CTRL|WLR_MODIFIER_SHIFT,SKEY,toggletag, {.ui = 1 << TAG} }
 
-/* helper for spawning shell commands in the pre dwm-5.0 fashion */
-#define SHCMD(cmd) { .v = (const char*[]){ "/bin/sh", "-c", cmd, NULL } }
-
 static const Key keys[] = {
 	/* Note that Shift changes certain key codes: 2 -> at, etc. */
 	/* modifier                  key                  function          argument */
-	{ MODKEY,                    XKB_KEY_p,           spawn,            SHCMD("wmenu-run")},
-	{ MODKEY,                    XKB_KEY_Return,      spawn,            SHCMD("foot")},
-	{ MODKEY,                    XKB_KEY_semicolon,   spawn,            SHCMD("firefox")},
+	{ MODKEY,                    XKB_KEY_p,           spawn,            { .v = (const char*[]){ "wmenu-run", NULL } } },
+	{ MODKEY,                    XKB_KEY_Return,      spawn,            { .v = (const char*[]){ "foot", NULL } } },
+	{ MODKEY,                    XKB_KEY_semicolon,   spawn,            { .v = (const char*[]){ "firefox", NULL } } },
 
 	{ 0,                         XKB_KEY_XF86AudioRaiseVolume,  spawn,  { .v = (const char*[]){ "bash", "/home/colin/.dotfiles/scripts/volctl", "up", "5", NULL } } },
 	{ 0,                         XKB_KEY_XF86AudioLowerVolume,  spawn,  { .v = (const char*[]){ "bash", "/home/colin/.dotfiles/scripts/volctl", "down", "5", NULL } } },
