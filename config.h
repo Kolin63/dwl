@@ -199,6 +199,8 @@ static const Key keys[] = {
 	{ MODKEY|WLR_MODIFIER_SHIFT, XKB_KEY_c,           spawn,  { .v = (const char*[]){ "bash", "/home/colin/.dotfiles/scripts/ansiicolor", NULL } } },
 	{ MODKEY,                    XKB_KEY_e,           spawn,  { .v = (const char*[]){ "bash", "/home/colin/.dotfiles/scripts/emojiselect", NULL } } },
 
+	{ MODKEY,                    XKB_KEY_b,           spawn,  { .v = (const char*[]){ "bash", "/home/colin/.dotfiles/scripts/power", NULL } } },
+
 	{ MODKEY,                    XKB_KEY_j,           focusstack,       {.i = +1} },
 	{ MODKEY,                    XKB_KEY_k,           focusstack,       {.i = -1} },
 	{ MODKEY,                    XKB_KEY_i,           incnmaster,       {.i = +1} },
