@@ -191,6 +191,7 @@ static const Key keys[] = {
 	{ MODKEY,                    XKB_KEY_p,           spawn,            { .v = (const char*[]){ "wmenu-run", NULL } } },
 	{ MODKEY,                    XKB_KEY_Return,      spawn,            { .v = (const char*[]){ "foot", NULL } } },
 	{ MODKEY,                    XKB_KEY_semicolon,   spawn,            { .v = (const char*[]){ "firefox", NULL } } },
+	{ MODKEY|WLR_MODIFIER_SHIFT, XKB_KEY_l,           spawn,            { .v = (const char*[]){ "waylock", NULL } } },
 
 	{ 0,                         XKB_KEY_XF86AudioRaiseVolume,  spawn,  { .v = (const char*[]){ "bash", "/home/colin/.dotfiles/scripts/volctl", "up", "5", NULL } } },
 	{ 0,                         XKB_KEY_XF86AudioLowerVolume,  spawn,  { .v = (const char*[]){ "bash", "/home/colin/.dotfiles/scripts/volctl", "down", "5", NULL } } },
