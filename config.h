@@ -7,6 +7,7 @@ patches applied:
 * vanitygaps
 * bar
 * unclutter
+* spawninfo
 
 */
 
