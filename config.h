@@ -46,41 +46,41 @@ static const float fullscreen_bg[]         = {0.0f, 0.0f, 0.0f, 1.0f}; /* You ca
 
 /* color schemes */
 enum {
-	SchemeBlack		=	0,
-	SchemeRed			=	1,
-	SchemeGreen		=	2,
-	SchemeYellow	=	3,
-	SchemeBlue		=	4,
-	SchemePurple	=	5,
-	SchemeCyan		=	6,
-	SchemeWhite		=	7,
-	SchemeBright	=	8,
-	SchemeNorm		=	100,
-	SchemeSel 		=	101,
-	SchemeUrg   	=	102,
+  SchemeBlack  =  0,
+  SchemeRed    =  1,
+  SchemeGreen  =  2,
+  SchemeYellow =  3,
+  SchemeBlue   =  4,
+  SchemePurple =  5,
+  SchemeCyan   =  6,
+  SchemeWhite  =  7,
+  SchemeBright =  8,
+  SchemeNorm   =  100,
+  SchemeSel    =  101,
+  SchemeUrg    =  102,
 };
 
-static uint32_t colors[][3]                = {
-	/*                                fg          bg          border    */
-	[SchemeBlack]		              =	{ 0x282828ff, 0x282828ff, 0x282828ff },
-	[SchemeRed]			              =	{ 0xcc241dff, 0x282828ff, 0x282828ff },
-	[SchemeGreen]		              =	{ 0x98971aff, 0x282828ff, 0x282828ff },
-	[SchemeYellow]	              =	{ 0xd79921ff, 0x282828ff, 0x282828ff },
-	[SchemeBlue]		              =	{ 0x458588ff, 0x282828ff, 0x282828ff },
-	[SchemePurple]	              =	{ 0xb16286ff, 0x282828ff, 0x282828ff },
-	[SchemeCyan]		              =	{ 0x689d6aff, 0x282828ff, 0x282828ff },
-	[SchemeWhite]		              =	{ 0xa89984ff, 0x282828ff, 0x282828ff },
-	[SchemeBlack | SchemeBright]	=	{ 0x928374ff, 0x282828ff, 0x282828ff },
-	[SchemeRed | SchemeBright]		=	{ 0xfb4934ff, 0x282828ff, 0x282828ff },
-	[SchemeGreen | SchemeBright]	=	{ 0xb8bb26ff, 0x282828ff, 0x282828ff },
-	[SchemeYellow | SchemeBright]	=	{ 0xfabd2fff, 0x282828ff, 0x282828ff },
-	[SchemeBlue | SchemeBright]		=	{ 0x83a598ff, 0x282828ff, 0x282828ff },
-	[SchemePurple | SchemeBright]	=	{ 0xd3869bff, 0x282828ff, 0x282828ff },
-	[SchemeCyan | SchemeBright]		=	{ 0x8ec07cff, 0x282828ff, 0x282828ff },
-	[SchemeWhite | SchemeBright]	=	{ 0xebdbb2ff, 0x282828ff, 0x282828ff },
-	[SchemeNorm]		              =	{ 0xebdbb2ff, 0x282828ff, 0x458588ff },
-	[SchemeSel]			              =	{ 0xebdbb2ff, 0x458588ff, 0x458588ff },
-	[SchemeUrg] 		              =	{ 0xebdbb2ff, 0xcc241dff, 0x458588ff },
+static uint32_t colors[][3] = {
+  /*                                fg          bg          border    */
+  [SchemeBlack]                 =  { 0x282828ff, 0x282828ff, 0x282828ff },
+  [SchemeRed]                   =  { 0xcc241dff, 0x282828ff, 0x282828ff },
+  [SchemeGreen]                 =  { 0x98971aff, 0x282828ff, 0x282828ff },
+  [SchemeYellow]                =  { 0xd79921ff, 0x282828ff, 0x282828ff },
+  [SchemeBlue]                  =  { 0x458588ff, 0x282828ff, 0x282828ff },
+  [SchemePurple]                =  { 0xb16286ff, 0x282828ff, 0x282828ff },
+  [SchemeCyan]                  =  { 0x689d6aff, 0x282828ff, 0x282828ff },
+  [SchemeWhite]                 =  { 0xa89984ff, 0x282828ff, 0x282828ff },
+  [SchemeBlack | SchemeBright]  =  { 0x928374ff, 0x282828ff, 0x282828ff },
+  [SchemeRed | SchemeBright]    =  { 0xfb4934ff, 0x282828ff, 0x282828ff },
+  [SchemeGreen | SchemeBright]  =  { 0xb8bb26ff, 0x282828ff, 0x282828ff },
+  [SchemeYellow | SchemeBright] =  { 0xfabd2fff, 0x282828ff, 0x282828ff },
+  [SchemeBlue | SchemeBright]   =  { 0x83a598ff, 0x282828ff, 0x282828ff },
+  [SchemePurple | SchemeBright] =  { 0xd3869bff, 0x282828ff, 0x282828ff },
+  [SchemeCyan | SchemeBright]   =  { 0x8ec07cff, 0x282828ff, 0x282828ff },
+  [SchemeWhite | SchemeBright]  =  { 0xebdbb2ff, 0x282828ff, 0x282828ff },
+  [SchemeNorm]                  =  { 0xebdbb2ff, 0x282828ff, 0x458588ff },
+  [SchemeSel]                   =  { 0xebdbb2ff, 0x458588ff, 0x458588ff },
+  [SchemeUrg]                   =  { 0xebdbb2ff, 0xcc241dff, 0x458588ff },
 };
 
 /* tagging - TAGCOUNT must be no greater than 31 */
@@ -93,19 +93,19 @@ static int log_level = WLR_ERROR;
 #define TAGSMASK(x) 1 << (x - 1)
 
 static const Rule rules[] = {
-	/* app_id             title       tags mask     isfloating   monitor */
-	{ "firefox",          NULL,       TAGSMASK(2),  0,           -1 },
-	{ "discord",          NULL,       TAGSMASK(8),  0,           -1 },
-	{ "Spotify",          NULL,       TAGSMASK(9),  0,           -1 },
-	{ "Pandora",          NULL,       TAGSMASK(4),  0,           -1 },
+  /* app_id             title       tags mask     isfloating   monitor */
+  { "firefox",          NULL,       TAGSMASK(2),  0,           -1 },
+  { "discord",          NULL,       TAGSMASK(8),  0,           -1 },
+  { "Spotify",          NULL,       TAGSMASK(9),  0,           -1 },
+  { "Pandora",          NULL,       TAGSMASK(4),  0,           -1 },
 };
 
 /* layout(s) */
 static const Layout layouts[] = {
-	/* symbol     arrange function */
-	{ "[]=",      tile },
-	{ "><>",      NULL },    /* no layout function means floating behavior */
-	{ "[M]",      monocle },
+  /* symbol     arrange function */
+  { "[]=",      tile },
+  { "><>",      NULL },    /* no layout function means floating behavior */
+  { "[M]",      monocle },
 };
 
 /* monitors */
@@ -113,20 +113,20 @@ static const Layout layouts[] = {
  * WARNING: negative values other than (-1, -1) cause problems with Xwayland clients due to
  * https://gitlab.freedesktop.org/xorg/xserver/-/issues/899 */
 static const MonitorRule monrules[] = {
-   /* name        mfact  nmaster scale layout       rotate/reflect                x    y
-    * example of a HiDPI laptop monitor:
-    { "eDP-1",    0.5f,  1,      2,    &layouts[0], WL_OUTPUT_TRANSFORM_NORMAL,   -1,  -1 }, */
-	{ NULL,       0.55f, 1,      1,    &layouts[0], WL_OUTPUT_TRANSFORM_NORMAL,   -1,  -1 },
-	/* default monitor rule: can be changed but cannot be eliminated; at least one monitor rule must exist */
+ /* name        mfact  nmaster scale layout       rotate/reflect                x    y
+  * example of a HiDPI laptop monitor:
+  { "eDP-1",    0.5f,  1,      2,    &layouts[0], WL_OUTPUT_TRANSFORM_NORMAL,   -1,  -1 }, */
+  { NULL,       0.55f, 1,      1,    &layouts[0], WL_OUTPUT_TRANSFORM_NORMAL,   -1,  -1 },
+  /* default monitor rule: can be changed but cannot be eliminated; at least one monitor rule must exist */
 };
 
 /* keyboard */
 static const struct xkb_rule_names xkb_rules = {
-	/* can specify fields: rules, model, layout, variant, options */
-	/* example:
-	.options = "ctrl:nocaps",
-	*/
-	.options = "caps:escape",
+  /* can specify fields: rules, model, layout, variant, options */
+  /* example:
+  .options = "ctrl:nocaps",
+  */
+  .options = "caps:escape",
 };
 
 static const int repeat_rate = 25;
@@ -182,69 +182,69 @@ static const int cursor_timeout = 3;
 #define MODKEY WLR_MODIFIER_LOGO
 
 #define TAGKEYS(KEY,SKEY,TAG) \
-	{ MODKEY,                    KEY,            view,            {.ui = 1 << TAG} }, \
-	{ MODKEY|WLR_MODIFIER_CTRL,  KEY,            toggleview,      {.ui = 1 << TAG} }, \
-	{ MODKEY|WLR_MODIFIER_SHIFT, SKEY,           tag,             {.ui = 1 << TAG} }, \
-	{ MODKEY|WLR_MODIFIER_CTRL|WLR_MODIFIER_SHIFT,SKEY,toggletag, {.ui = 1 << TAG} }
+  { MODKEY,                    KEY,                  view,      {.ui = 1 << TAG} }, \
+  { MODKEY|WLR_MODIFIER_CTRL,  KEY,                  toggleview,{.ui = 1 << TAG} }, \
+  { MODKEY|WLR_MODIFIER_SHIFT, SKEY,                 tag,       {.ui = 1 << TAG} }, \
+  { MODKEY|WLR_MODIFIER_CTRL|WLR_MODIFIER_SHIFT,SKEY,toggletag, {.ui = 1 << TAG} }
 
 static const Key keys[] = {
-	/* Note that Shift changes certain key codes: 2 -> at, etc. */
-	/* modifier                  key                  function          argument */
-	{ MODKEY,                    XKB_KEY_p,           spawn,            { .v = (const char*[]){ "wmenu-run", NULL } } },
-	{ MODKEY,                    XKB_KEY_Return,      spawn,            { .v = (const char*[]){ "foot", NULL } } },
-	{ MODKEY,                    XKB_KEY_semicolon,   spawn,            { .v = (const char*[]){ "firefox", NULL } } },
-	{ MODKEY|WLR_MODIFIER_SHIFT, XKB_KEY_l,           spawn,            { .v = (const char*[]){ "waylock", NULL } } },
+  /* Note that Shift changes certain key codes: 2 -> at, etc. */
+  /* modifier                  key                  function          argument */
+  { MODKEY,                    XKB_KEY_p,           spawn,            { .v = (const char*[]){ "wmenu-run", NULL } } },
+  { MODKEY,                    XKB_KEY_Return,      spawn,            { .v = (const char*[]){ "foot", NULL } } },
+  { MODKEY,                    XKB_KEY_semicolon,   spawn,            { .v = (const char*[]){ "firefox", NULL } } },
+  { MODKEY|WLR_MODIFIER_SHIFT, XKB_KEY_l,           spawn,            { .v = (const char*[]){ "waylock", NULL } } },
 
-	{ 0,                         XKB_KEY_XF86AudioRaiseVolume,  spawn,  { .v = (const char*[]){ "bash", "/home/colin/.dotfiles/scripts/volctl", "up", "5", NULL } } },
-	{ 0,                         XKB_KEY_XF86AudioLowerVolume,  spawn,  { .v = (const char*[]){ "bash", "/home/colin/.dotfiles/scripts/volctl", "down", "5", NULL } } },
-	{ 0,                         XKB_KEY_XF86AudioMute,         spawn,  { .v = (const char*[]){ "bash", "/home/colin/.dotfiles/scripts/volctl", "togglemute", NULL } } },
+  { 0,                         XKB_KEY_XF86AudioRaiseVolume,  spawn,  { .v = (const char*[]){ "bash", "/home/colin/.dotfiles/scripts/volctl", "up", "5", NULL } } },
+  { 0,                         XKB_KEY_XF86AudioLowerVolume,  spawn,  { .v = (const char*[]){ "bash", "/home/colin/.dotfiles/scripts/volctl", "down", "5", NULL } } },
+  { 0,                         XKB_KEY_XF86AudioMute,         spawn,  { .v = (const char*[]){ "bash", "/home/colin/.dotfiles/scripts/volctl", "togglemute", NULL } } },
 
-	{ 0,                         XKB_KEY_XF86MonBrightnessUp,   spawn,  { .v = (const char*[]){ "bash", "/home/colin/.dotfiles/scripts/brightctl", "10%+", NULL } } },
-	{ 0,                         XKB_KEY_XF86MonBrightnessDown, spawn,  { .v = (const char*[]){ "bash", "/home/colin/.dotfiles/scripts/brightctl", "10%-", NULL } } },
+  { 0,                         XKB_KEY_XF86MonBrightnessUp,   spawn,  { .v = (const char*[]){ "bash", "/home/colin/.dotfiles/scripts/brightctl", "10%+", NULL } } },
+  { 0,                         XKB_KEY_XF86MonBrightnessDown, spawn,  { .v = (const char*[]){ "bash", "/home/colin/.dotfiles/scripts/brightctl", "10%-", NULL } } },
 
-	{ MODKEY|WLR_MODIFIER_SHIFT, XKB_KEY_c,           spawn,            { .v = (const char*[]){ "bash", "/home/colin/.dotfiles/scripts/ansiicolor", NULL } } },
-	{ MODKEY,                    XKB_KEY_e,           spawn,            { .v = (const char*[]){ "bash", "/home/colin/.dotfiles/scripts/emojiselect", NULL } } },
+  { MODKEY|WLR_MODIFIER_SHIFT, XKB_KEY_c,           spawn,            { .v = (const char*[]){ "bash", "/home/colin/.dotfiles/scripts/ansiicolor", NULL } } },
+  { MODKEY,                    XKB_KEY_e,           spawn,            { .v = (const char*[]){ "bash", "/home/colin/.dotfiles/scripts/emojiselect", NULL } } },
 
-	{ MODKEY,                    XKB_KEY_b,           spawn,            { .v = (const char*[]){ "bash", "/home/colin/.dotfiles/scripts/power", NULL } } },
+  { MODKEY,                    XKB_KEY_b,           spawn,            { .v = (const char*[]){ "bash", "/home/colin/.dotfiles/scripts/power", NULL } } },
 
   { MODKEY|WLR_MODIFIER_SHIFT, XKB_KEY_P,           spawninfo,        { .v = (const char*[]){ "bash", "/home/colin/.dotfiles/scripts/dwlprop", NULL } } },
 
-	{ MODKEY,                    XKB_KEY_j,           focusstack,       {.i = +1} },
-	{ MODKEY,                    XKB_KEY_k,           focusstack,       {.i = -1} },
-	{ MODKEY,                    XKB_KEY_i,           incnmaster,       {.i = +1} },
-	{ MODKEY,                    XKB_KEY_d,           incnmaster,       {.i = -1} },
-	{ MODKEY,                    XKB_KEY_h,           setmfact,         {.f = -0.05f} },
-	{ MODKEY,                    XKB_KEY_l,           setmfact,         {.f = +0.05f} },
-	{ MODKEY,                    XKB_KEY_z,           zoom,             {0} },
-	{ MODKEY,                    XKB_KEY_Tab,         view,             {0} },
-	{ MODKEY|WLR_MODIFIER_SHIFT, XKB_KEY_q,           killclient,       {0} },
-	{ MODKEY,                    XKB_KEY_t,           setlayout,        {.v = &layouts[0]} },
-	{ MODKEY,                    XKB_KEY_m,           setlayout,        {.v = &layouts[2]} },
-	{ MODKEY|WLR_MODIFIER_SHIFT, XKB_KEY_space,       togglefloating,   {0} },
-	{ MODKEY,                    XKB_KEY_f,           togglefullscreen, {0} },
-	TAGKEYS(          XKB_KEY_1, XKB_KEY_exclam,                        0),
-	TAGKEYS(          XKB_KEY_2, XKB_KEY_at,                            1),
-	TAGKEYS(          XKB_KEY_3, XKB_KEY_numbersign,                    2),
-	TAGKEYS(          XKB_KEY_4, XKB_KEY_dollar,                        3),
-	TAGKEYS(          XKB_KEY_5, XKB_KEY_percent,                       4),
-	TAGKEYS(          XKB_KEY_6, XKB_KEY_asciicircum,                   5),
-	TAGKEYS(          XKB_KEY_7, XKB_KEY_ampersand,                     6),
-	TAGKEYS(          XKB_KEY_8, XKB_KEY_asterisk,                      7),
-	TAGKEYS(          XKB_KEY_9, XKB_KEY_parenleft,                     8),
-	{ MODKEY|WLR_MODIFIER_SHIFT, XKB_KEY_Escape,      quit,             {0} },
+  { MODKEY,                    XKB_KEY_j,           focusstack,       {.i = +1} },
+  { MODKEY,                    XKB_KEY_k,           focusstack,       {.i = -1} },
+  { MODKEY,                    XKB_KEY_i,           incnmaster,       {.i = +1} },
+  { MODKEY,                    XKB_KEY_d,           incnmaster,       {.i = -1} },
+  { MODKEY,                    XKB_KEY_h,           setmfact,         {.f = -0.05f} },
+  { MODKEY,                    XKB_KEY_l,           setmfact,         {.f = +0.05f} },
+  { MODKEY,                    XKB_KEY_z,           zoom,             {0} },
+  { MODKEY,                    XKB_KEY_Tab,         view,             {0} },
+  { MODKEY|WLR_MODIFIER_SHIFT, XKB_KEY_q,           killclient,       {0} },
+  { MODKEY,                    XKB_KEY_t,           setlayout,        {.v = &layouts[0]} },
+  { MODKEY,                    XKB_KEY_m,           setlayout,        {.v = &layouts[2]} },
+  { MODKEY|WLR_MODIFIER_SHIFT, XKB_KEY_space,       togglefloating,   {0} },
+  { MODKEY,                    XKB_KEY_f,           togglefullscreen, {0} },
+  TAGKEYS(          XKB_KEY_1, XKB_KEY_exclam,                        0),
+  TAGKEYS(          XKB_KEY_2, XKB_KEY_at,                            1),
+  TAGKEYS(          XKB_KEY_3, XKB_KEY_numbersign,                    2),
+  TAGKEYS(          XKB_KEY_4, XKB_KEY_dollar,                        3),
+  TAGKEYS(          XKB_KEY_5, XKB_KEY_percent,                       4),
+  TAGKEYS(          XKB_KEY_6, XKB_KEY_asciicircum,                   5),
+  TAGKEYS(          XKB_KEY_7, XKB_KEY_ampersand,                     6),
+  TAGKEYS(          XKB_KEY_8, XKB_KEY_asterisk,                      7),
+  TAGKEYS(          XKB_KEY_9, XKB_KEY_parenleft,                     8),
+  { MODKEY|WLR_MODIFIER_SHIFT, XKB_KEY_Escape,      quit,             {0} },
 
-	/* Ctrl-Alt-Backspace and Ctrl-Alt-Fx used to be handled by X server */
-	{ WLR_MODIFIER_CTRL|WLR_MODIFIER_ALT,XKB_KEY_Terminate_Server, quit, {0} },
-	/* Ctrl-Alt-Fx is used to switch to another VT, if you don't know what a VT is
-	 * do not remove them.
-	 */
+  /* Ctrl-Alt-Backspace and Ctrl-Alt-Fx used to be handled by X server */
+  { WLR_MODIFIER_CTRL|WLR_MODIFIER_ALT,XKB_KEY_Terminate_Server, quit, {0} },
+  /* Ctrl-Alt-Fx is used to switch to another VT, if you don't know what a VT is
+   * do not remove them.
+   */
 #define CHVT(n) { WLR_MODIFIER_CTRL|WLR_MODIFIER_ALT,XKB_KEY_XF86Switch_VT_##n, chvt, {.ui = (n)} }
-	CHVT(1), CHVT(2), CHVT(3), CHVT(4), CHVT(5), CHVT(6),
-	CHVT(7), CHVT(8), CHVT(9), CHVT(10), CHVT(11), CHVT(12),
+  CHVT(1), CHVT(2), CHVT(3), CHVT(4), CHVT(5), CHVT(6),
+  CHVT(7), CHVT(8), CHVT(9), CHVT(10), CHVT(11), CHVT(12),
 };
 
 static const Button buttons[] = {
-	{ ClkClient,   MODKEY, BTN_LEFT,   moveresize,     {.ui = CurMove} },
-	{ ClkClient,   MODKEY, BTN_RIGHT,  moveresize,     {.ui = CurResize} },
-	{ ClkTagBar,   0,      BTN_LEFT,   view,           {0} },
+  { ClkClient,   MODKEY, BTN_LEFT,   moveresize,     {.ui = CurMove} },
+  { ClkClient,   MODKEY, BTN_RIGHT,  moveresize,     {.ui = CurResize} },
+  { ClkTagBar,   0,      BTN_LEFT,   view,           {0} },
 };
