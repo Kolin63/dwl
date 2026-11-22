@@ -201,10 +201,10 @@ static const Key keys[] = {
 	{ 0,                         XKB_KEY_XF86MonBrightnessUp,   spawn,  { .v = (const char*[]){ "bash", "/home/colin/.dotfiles/scripts/brightctl", "10%+", NULL } } },
 	{ 0,                         XKB_KEY_XF86MonBrightnessDown, spawn,  { .v = (const char*[]){ "bash", "/home/colin/.dotfiles/scripts/brightctl", "10%-", NULL } } },
 
-	{ MODKEY|WLR_MODIFIER_SHIFT, XKB_KEY_c,           spawn,  { .v = (const char*[]){ "bash", "/home/colin/.dotfiles/scripts/ansiicolor", NULL } } },
-	{ MODKEY,                    XKB_KEY_e,           spawn,  { .v = (const char*[]){ "bash", "/home/colin/.dotfiles/scripts/emojiselect", NULL } } },
+	{ MODKEY|WLR_MODIFIER_SHIFT, XKB_KEY_c,           spawn,            { .v = (const char*[]){ "bash", "/home/colin/.dotfiles/scripts/ansiicolor", NULL } } },
+	{ MODKEY,                    XKB_KEY_e,           spawn,            { .v = (const char*[]){ "bash", "/home/colin/.dotfiles/scripts/emojiselect", NULL } } },
 
-	{ MODKEY,                    XKB_KEY_b,           spawn,  { .v = (const char*[]){ "bash", "/home/colin/.dotfiles/scripts/power", NULL } } },
+	{ MODKEY,                    XKB_KEY_b,           spawn,            { .v = (const char*[]){ "bash", "/home/colin/.dotfiles/scripts/power", NULL } } },
 
 	{ MODKEY,                    XKB_KEY_j,           focusstack,       {.i = +1} },
 	{ MODKEY,                    XKB_KEY_k,           focusstack,       {.i = -1} },
