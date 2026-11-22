@@ -96,7 +96,8 @@ static const Rule rules[] = {
 	/* app_id             title       tags mask     isfloating   monitor */
 	{ "firefox",          NULL,       TAGSMASK(2),  0,           -1 },
 	{ "discord",          NULL,       TAGSMASK(8),  0,           -1 },
-	{ "spotify",          NULL,       TAGSMASK(9),  0,           -1 },
+	{ "Spotify",          NULL,       TAGSMASK(9),  0,           -1 },
+	{ "Pandora",          NULL,       TAGSMASK(4),  0,           -1 },
 };
 
 /* layout(s) */
