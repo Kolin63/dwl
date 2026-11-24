@@ -187,6 +187,7 @@ static const int cursor_timeout = 3;
   { MODKEY|WLR_MODIFIER_SHIFT, SKEY,                 tag,       {.ui = 1 << TAG} }, \
   { MODKEY|WLR_MODIFIER_CTRL|WLR_MODIFIER_SHIFT,SKEY,toggletag, {.ui = 1 << TAG} }
 
+// /usr/include/xkbcommon/xkbcommon-keysyms.h
 static const Key keys[] = {
   /* Note that Shift changes certain key codes: 2 -> at, etc. */
   /* modifier                  key                  function          argument */
@@ -208,6 +209,9 @@ static const Key keys[] = {
   { MODKEY,                    XKB_KEY_b,           spawn,            { .v = (const char*[]){ "bash", "/home/colin/.dotfiles/scripts/power", NULL } } },
 
   { MODKEY|WLR_MODIFIER_SHIFT, XKB_KEY_P,           spawninfo,        { .v = (const char*[]){ "bash", "/home/colin/.dotfiles/scripts/dwlprop", NULL } } },
+
+  { WLR_MODIFIER_CTRL,         XKB_KEY_Print,       spawninfo,        { .v = (const char*[]){ "bash", "/home/colin/.dotfiles/scripts/screenshotwindow.sh", NULL } } },
+  { 0,                         XKB_KEY_Print,       spawn,            { .v = (const char*[]){ "bash", "/home/colin/.dotfiles/scripts/screenshotscreen.sh", NULL } } },
 
   { MODKEY,                    XKB_KEY_j,           focusstack,       {.i = +1} },
   { MODKEY,                    XKB_KEY_k,           focusstack,       {.i = -1} },
