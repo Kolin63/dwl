@@ -98,6 +98,7 @@ static const Rule rules[] = {
   { "discord",          NULL,       TAGSMASK(8),  0,           -1 },
   { "Spotify",          NULL,       TAGSMASK(9),  0,           -1 },
   { "Pandora",          NULL,       TAGSMASK(4),  0,           -1 },
+  { "Modpack",          NULL,       TAGSMASK(4),  0,           -1 },
 };
 
 /* layout(s) */
